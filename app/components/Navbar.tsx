@@ -5,12 +5,12 @@ const Navbar = () => {
   return (
     <nav className='bg-white shadow-md'>
         <div className='container mx-auto px-4 py-3 flex justify-between items-center'>
-            <Link href={"/"} className='text-xl font-bold text-blue-600'>
+            <Link href="/" className='text-xl font-bold text-blue-600'>
                 IssueTracker
             </Link>
             <div className='space-x-4'>
-                <Link href={"/"} className='hover:text-blue-600'>Home</Link>
-                <Link href={"/issues"} className='hover:text-blue-600'>Issues</Link>
+                <Link href="/" className='hover:text-blue-600'>Home</Link>
+                <Link href="/issues" className='hover:text-blue-600'>Issues</Link>
             </div>
 
         </div>
