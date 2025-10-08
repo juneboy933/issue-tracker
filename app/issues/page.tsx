@@ -1,13 +1,22 @@
 import Link from 'next/link';
 import React from 'react'
 
-const issues = [
-    {id:1, title: "Login button not working"},
-    {id:2, title: "Page crashes on load"},
-    {id:3, title: "Typo in the homepage"}
-];
+type Issue = {
+    id: number;
+    title: string;
+    description: string;
+}
 
-const IssuesPage = () => {
+async function getIssues() {
+    const res = await fetch("http://localhost:3000/api/issues", {cache: 'no-store'});
+    if(!res.ok) throw new Error("Failed to fetch issues");
+    
+    const data = await res.json();
+    return data;
+}
+
+const IssuesPage = async () => {
+    const issues: Issue[] = await getIssues();
   return (
     <div>
         <h1 className='text-3xl font-bold mb-4'>
