@@ -23,3 +23,14 @@ export async function POST(request: Request) {
     }
 }
 
+export async function GET() {
+    try {
+        const issueCollection = await getCollection('issues');
+        const issues = await issueCollection?.find().sort({ createdAt: -1 }).toArray();
+        return NextResponse.json(issues, { status: 200 });
+    } catch (error) {
+        console.error('Error fetching issues:', error);
+        return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    }
+}
+
