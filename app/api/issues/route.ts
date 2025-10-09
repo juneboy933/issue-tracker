@@ -1,12 +1,25 @@
+import { getCollection } from '@/lib/mongodb';
 import { NextResponse } from 'next/server';
 
-const issues = [
-    {id:1, title: "Login button not working", description: "The login button on the homepage does not respond when clicked."},
-    {id:2, title: "Page crashes on load", description: "The dashboard page crashes with a 500 error when accessed."},
-    {id:3, title: "Typo in the homepage", description: "There's a typo in the main headline of the homepage."}
-];
+export async function POST(request: Request) {
+    try {
+        const { title, description } = await request.json();
+        if(!title || !description) {
+            return NextResponse.json({ message: 'Title and description are required.' }, { status: 400 });
+        }
 
-export async function GET() {
-    return NextResponse.json(issues);
+        const issueCollection = await getCollection('issues');
+        const newIssue = {
+            title,
+            description,
+            status: 'open',
+            createdAt: new Date(),
+        }
+        const result = await issueCollection?.insertOne(newIssue);
+        return NextResponse.json({ message: 'Issue created successfully', issueId: result?.insertedId }, { status: 201 });
+    } catch (error) {
+        console.error('Error creating issue:', error);
+        return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    }
 }
 
