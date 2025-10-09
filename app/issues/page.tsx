@@ -1,40 +1,60 @@
-import Link from 'next/link';
-import React from 'react'
+'use client';
 
-type Issue = {
-    id: number;
-    title: string;
-    description: string;
+import { useEffect, useState } from 'react';
+
+interface Issue {
+  _id: string;
+  title: string;
+  description: string;
+  status: string;
+  createdAt: string;
 }
 
-async function getIssues() {
-    const res = await fetch("http://localhost:3000/api/issues", {cache: 'no-store'});
-    if(!res.ok) throw new Error("Failed to fetch issues");
-    
-    const data = await res.json();
-    return data;
-}
+export default function IssuesPage() {
+  const [issues, setIssues] = useState<Issue[]>([]);
+  const [loading, setLoading] = useState(true);
 
-const IssuesPage = async () => {
-    const issues: Issue[] = await getIssues();
+  useEffect(() => {
+    const fetchIssues = async () => {
+      try {
+        const res = await fetch('/api/issues');
+        const data = await res.json();
+        setIssues(data);
+      } catch (error) {
+        console.error('Error fetching issues:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIssues();
+  }, []);
+
+  if (loading) return <p className="text-center mt-10">Loading issues...</p>;
+
   return (
-    <div>
-        <h1 className='text-3xl font-bold mb-4'>
-            All Issues
-        </h1>
-        <ul className='space-y-3'>
-            {issues.map((issue) => (
-                <li key={issue.id} className='p-4 bg-white shadow rounded-lg'>
-                    <Link 
-                        href={`/issues/${issue.id}`}
-                        className='text-blue-600 hover:underline'>
-                        {issue.title}
-                    </Link>
-                </li>
-            ))}
+    <div className="max-w-4xl mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold mb-6">All Issues</h1>
+      {issues.length === 0 ? (
+        <p className="text-gray-500 text-center">No issues yet.</p>
+      ) : (
+        <ul className="space-y-4">
+          {issues.map((issue) => (
+            <li
+              key={issue._id}
+              className="border border-gray-200 rounded-md p-4 hover:shadow-sm transition"
+            >
+              <h2 className="text-lg font-semibold text-blue-600">
+                {issue.title}
+              </h2>
+              <p className="text-gray-700">{issue.description}</p>
+              <p className="text-xs text-gray-500 mt-2">
+                {new Date(issue.createdAt).toLocaleString()}
+              </p>
+            </li>
+          ))}
         </ul>
+      )}
     </div>
-  )
+  );
 }
-
-export default IssuesPage
