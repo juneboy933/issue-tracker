@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
 const IssueForm = () => {
@@ -7,6 +8,7 @@ const IssueForm = () => {
     const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,6 +27,7 @@ const IssueForm = () => {
             setTitle('');
             setDescription('');
             setMessage('Issue created successfully!');
+            router.push('/issues');
         } catch (error) {
             setMessage('Error creating issue. Please try again.'); 
             console.log(error);
