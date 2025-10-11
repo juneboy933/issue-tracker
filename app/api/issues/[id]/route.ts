@@ -48,3 +48,20 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
     return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
   }
 }
+
+// DELETE route
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
+
+  try {
+    const issueCollection = await getCollection("issues");
+    const result = await issueCollection?.deleteOne({_id: new ObjectId(id) });
+    if (result?.deletedCount === 0) {
+      return NextResponse.json({ message: "Issue not found" }, { status: 404 });
+    }
+    return NextResponse.json({ message: "Issue deleted successfully" }, { status: 200 });
+  } catch (error) {
+    console.error("Error deleting issue:", error);
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+  }
+}

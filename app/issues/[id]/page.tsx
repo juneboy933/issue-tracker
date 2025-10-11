@@ -2,6 +2,7 @@ import { getCollection } from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import Link from 'next/link';
 import React from 'react'
+import IssueActions from './issueActions/page';
 interface IssuesPageProps {
     params: {id: string};
 }
@@ -25,6 +26,7 @@ const IssuePage = async({params}: IssuesPageProps) => {
             className='text-blue-600 hover:underline'>
                 Edit Issue
         </Link>
+        <IssueActions id={id}/>
     </div>
   )
 }
