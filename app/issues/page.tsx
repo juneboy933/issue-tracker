@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 interface Issue {
@@ -18,6 +19,7 @@ export default function IssuesPage() {
     const fetchIssues = async () => {
       try {
         const res = await fetch('/api/issues');
+        if(!res.ok) return [];
         const data = await res.json();
         setIssues(data);
       } catch (error) {
@@ -44,13 +46,15 @@ export default function IssuesPage() {
               key={issue._id}
               className="border border-gray-200 rounded-md p-4 hover:shadow-sm transition"
             >
-              <h2 className="text-lg font-semibold text-blue-600">
-                {issue.title}
-              </h2>
-              <p className="text-gray-700">{issue.description}</p>
-              <p className="text-xs text-gray-500 mt-2">
-                {new Date(issue.createdAt).toLocaleString()}
-              </p>
+              <Link href={`/issues/${issue._id}`}>
+                <h2 className="text-lg font-semibold text-blue-600">
+                  {issue.title}
+                </h2>
+                <p className="text-gray-700">{issue.description}</p>
+                <p className="text-xs text-gray-500 mt-2">
+                  {new Date(issue.createdAt).toLocaleString()}
+                </p>
+              </Link>
             </li>
           ))}
         </ul>
