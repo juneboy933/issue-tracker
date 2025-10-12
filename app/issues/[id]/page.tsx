@@ -8,7 +8,7 @@ interface IssuesPageProps {
 }
 
 const IssuePage = async({params}: IssuesPageProps) => {
-    const { id } = await params;
+    const { id } = params;
     const issueCollection = await getCollection("issues");
     const issue = await issueCollection?.findOne({_id: new ObjectId(id)});
 
