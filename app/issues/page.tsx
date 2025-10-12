@@ -52,7 +52,7 @@ export default function IssuesPage() {
           onChange={(e) => setSearch(e.target.value)}
           className='border border-gray-300 w-full p-6 rounded sm:w-1/4' 
         />
-        <select value={filter} onChange={(e) => setFilter(e.target.value)} className="border border-gray-300 p-2 rounded">
+        <select value={filter} onChange={(e) => setFilter(e.target.value)} className="border border-gray-300 p-6 rounded">
           <option value="all">All</option>
           <option value="open">Open</option>
           <option value="in-progress">In Progress</option>
