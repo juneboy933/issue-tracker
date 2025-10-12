@@ -3,12 +3,8 @@ import { ObjectId } from 'mongodb';
 import React from 'react';
 import IssueActions from '@/app/components/IssueAction';
 
-interface IssuesPageProps {
-  params: { id: string };
-}
-
-const IssuePage = async ({ params }: IssuesPageProps) => {
-  const { id } = params;
+const IssuePage = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
   const issueCollection = await getCollection('issues');
   const issue = await issueCollection?.findOne({ _id: new ObjectId(id) });
 
@@ -24,7 +20,6 @@ const IssuePage = async ({ params }: IssuesPageProps) => {
         {new Date(issue.createdAt).toLocaleString()}
       </p>
 
-      {/* Action buttons */}
       <IssueActions id={id} />
     </div>
   );
