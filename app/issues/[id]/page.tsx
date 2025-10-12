@@ -2,7 +2,7 @@ import { getCollection } from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import Link from 'next/link';
 import React from 'react'
-import IssueActions from './issueActions/page';
+import IssueActions from '@/app/components/IssueAction';
 interface IssuesPageProps {
     params: {id: string};
 }
